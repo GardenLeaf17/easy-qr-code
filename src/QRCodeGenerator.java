@@ -1,6 +1,6 @@
 public class QRCodeGenerator {
 
-    public static boolean checkIfInArray(int[] array, int find) {
+    public static boolean storedInArray(char[] array, char find) {
         boolean found = false;
 
         for (int i = 0, size = array.length; i < size; i++) {
@@ -18,31 +18,29 @@ public class QRCodeGenerator {
         String userInput = "";
 
 
-        // flags for type of symbols in user input
+        // flags for variety of symbols in user input
         // 0 - numeric, 1 - alphanumeric, 2 - kanji, 3 - 8-bit byte data
         boolean[] characterTypes = {false, false, false, false};
 
-        // alphaNumeric characters: 32: SP, 36: $, 42: *, 43: +, 45: -, 46: ., 47: /, 58: ":"
-        int[] alphaNumericMiscChars = {32, 36, 42, 43, 45, 46, 47, 58};
+        // exclusive numeric characters: 0 1 2 3 4 5 6 7 8 9
+        char[] numericSubset = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+
+        // exclusive alphanumeric characters: SP $ * + - . / : and capital letters A to Z
+        char[] alphaNumericSubset = {' ', '$', '*', '+', '-', '.', '/', ':', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 
 
         for (int i = 0, inputLength = userInput.length(); i < inputLength; i++ ) { // n is defined so that s.length() is evaluated once
-            int characterCode = (int) userInput.charAt(i);
+            char symbol = userInput.charAt(i);
 
             // ASCII and Unicode characters 48 - 57 are 0 - 9
-            if (characterCode >= 48 && characterCode <= 57) {
+            if (storedInArray(numericSubset, symbol)) {
                 characterTypes[0] = true;
 
             // ASCII and Unicode characters 65 - 90 are A - Z
-            } else if (characterCode >= 65 && characterCode <= 90) {
-                characterTypes[1] = true;
-
-            // checks for the following alphanumeric characters: SP $ * + - . / :
-            } else if (checkIfInArray(alphaNumericMiscChars, characterCode) == true) {
+            } else if (storedInArray(alphaNumericSubset, symbol)) {
                 characterTypes[1] = true;
 
             }
-
         }
 
     }
